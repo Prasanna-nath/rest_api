@@ -32,7 +32,6 @@ const addStudent = (req, res) => {
       (error, results) => {
         if (error) throw error;
         res.status(200).send("Student added successfully.");
-        console.log("Student created successfully");
       }
     );
   });
@@ -40,6 +39,7 @@ const addStudent = (req, res) => {
 
 const deleteStudent = (req, res) => {
   const id = parseInt(req.params.id);
+
   // check student exists or not.
   pool.query(queries.getStudentById, [id], (error, results) => {
     const noStudentFound = !results.rows.length;
@@ -67,7 +67,6 @@ const updateStudent = (req, res) => {
     pool.query(queries.updateStudent, [name, id], (error, results) => {
       if (error) throw error;
       res.status(200).send("Student updated successfully.");
-      console.log("Student update successfully.");
     });
   });
 };
