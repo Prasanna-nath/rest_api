@@ -59,17 +59,28 @@ const updateStudent = (req, res) => {
   const { name } = req.body;
 
   pool.query(queries.getStudentById, [id], (error, results) => {
+    if (error) {
+      // Handle query error
+      console.error('Error fetching student:', error);
+      return res.status(500).send("An error occurred while fetching the student.");
+    }
+
     const noStudentFound = !results.rows.length;
     if (noStudentFound) {
-      res.send("Student does not found.");
+      return res.status(404).send("Student not found.");
     }
 
     pool.query(queries.updateStudent, [name, id], (error, results) => {
-      if (error) throw error;
+      if (error) {
+        // Handle query error
+        console.error('Error updating student:', error);
+        return res.status(500).send("An error occurred while updating the student.");
+      }
       res.status(200).send("Student updated successfully.");
     });
   });
 };
+
 
 module.exports = {
   getStudents,
